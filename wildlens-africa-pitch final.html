@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WildLens Africa — For Wildlife Photographers</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0A0A0A;
+      --parch:   #F0EBE1;
+      --amber:   #C17D2E;
+      --sage:    #6B7B5E;
+      --mid:     #1C1C1C;
+      --muted:   #5A5A5A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--parch);
+      font-family: 'Georgia', serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(193,125,46,0.15);
+    }
+
+    .logo {
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      font-family: 'Georgia', serif;
+      font-style: italic;
+    }
+
+    .nav-cta {
+      background: var(--amber);
+      color: var(--black);
+      border: none;
+      padding: 0.55rem 1.4rem;
+      font-size: 0.8rem;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-cta:hover { background: #d98f3a; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6rem 2.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.55) 50%, rgba(10,10,10,0.3) 100%),
+        url('https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=1600&q=80') center/cover no-repeat;
+    }
+
+    .hero-eyebrow {
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(2.4rem, 7vw, 6rem);
+      font-weight: 400;
+      line-height: 1.05;
+      max-width: 820px;
+      color: var(--parch);
+      margin-bottom: 2rem;
+    }
+
+    .hero-headline em {
+      color: var(--amber);
+      font-style: italic;
+    }
+
+    .hero-sub {
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 520px;
+      color: rgba(240,235,225,0.75);
+      margin-bottom: 2.8rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn-primary {
+      background: var(--amber);
+      color: var(--black);
+      border: none;
+      padding: 0.85rem 2rem;
+      font-size: 0.85rem;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover { background: #d98f3a; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--parch);
+      border: 1px solid rgba(240,235,225,0.35);
+      padding: 0.85rem 2rem;
+      font-size: 0.85rem;
+      font-family: Arial, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.2s;
+    }
+
+    .btn-ghost:hover { border-color: var(--parch); }
+
+    /* ── PROBLEM ── */
+    .section {
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-label::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--sage);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(240,235,225,0.08);
+      border: 1px solid rgba(240,235,225,0.08);
+    }
+
+    .problem-card {
+      padding: 2.5rem 2rem;
+      background: var(--black);
+    }
+
+    .problem-card:hover { background: var(--mid); }
+
+    .problem-num {
+      font-size: 3rem;
+      font-weight: 400;
+      color: rgba(193,125,46,0.2);
+      line-height: 1;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    .problem-text {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: rgba(240,235,225,0.8);
+    }
+
+    .problem-text strong {
+      color: var(--parch);
+      font-weight: 400;
+    }
+
+    /* ── PULL QUOTE ── */
+    .pullquote-section {
+      border-top: 1px solid rgba(193,125,46,0.25);
+      border-bottom: 1px solid rgba(193,125,46,0.25);
+      padding: 5rem 2.5rem;
+      text-align: center;
+    }
+
+    .pullquote {
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.3;
+      max-width: 820px;
+      margin: 0 auto;
+      color: var(--parch);
+    }
+
+    .pullquote span { color: var(--amber); }
+
+    /* ── HOW IT WORKS ── */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem 2rem;
+      margin-top: 3rem;
+    }
+
+    .how-step {
+      border-top: 1px solid rgba(193,125,46,0.3);
+      padding-top: 1.5rem;
+    }
+
+    .how-step-num {
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      margin-bottom: 0.9rem;
+    }
+
+    .how-step h3 {
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 0.7rem;
+      line-height: 1.3;
+    }
+
+    .how-step p {
+      font-family: Arial, sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: rgba(240,235,225,0.65);
+    }
+
+    /* ── WHAT YOU GET ── */
+    .perks-section {
+      background: var(--mid);
+      padding: 6rem 2.5rem;
+    }
+
+    .perks-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .perks-headline {
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 400;
+      max-width: 600px;
+      margin-bottom: 3.5rem;
+      line-height: 1.2;
+    }
+
+    .perks-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .perk {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .perk-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      margin-top: 0.55rem;
+      flex-shrink: 0;
+    }
+
+    .perk-body h4 {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 0.35rem;
+    }
+
+    .perk-body p {
+      font-family: Arial, sans-serif;
+      font-size: 0.84rem;
+      line-height: 1.6;
+      color: rgba(240,235,225,0.6);
+    }
+
+    /* ── WHO WE WANT ── */
+    .who-section {
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .who-left h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+
+    .who-left p {
+      font-family: Arial, sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: rgba(240,235,225,0.65);
+    }
+
+    .who-right {
+      border-left: 1px solid rgba(193,125,46,0.2);
+      padding-left: 3rem;
+    }
+
+    .fit-item {
+      padding: 1.2rem 0;
+      border-bottom: 1px solid rgba(240,235,225,0.06);
+      font-size: 0.95rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      color: rgba(240,235,225,0.8);
+      font-family: Arial, sans-serif;
+    }
+
+    .fit-mark {
+      color: var(--amber);
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    /* ── FORM ── */
+    .form-section {
+      background: var(--parch);
+      color: var(--black);
+      padding: 7rem 2.5rem;
+    }
+
+    .form-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .form-eyebrow {
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 1rem;
+    }
+
+    .form-headline {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 0.8rem;
+      color: var(--black);
+    }
+
+    .form-sub {
+      font-family: Arial, sans-serif;
+      font-size: 0.92rem;
+      color: #555;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-field label {
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #444;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: white;
+      border: 1px solid #d0c8bc;
+      padding: 0.8rem 1rem;
+      font-size: 0.92rem;
+      font-family: Arial, sans-serif;
+      color: var(--black);
+      outline: none;
+      width: 100%;
+      appearance: none;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--amber);
+    }
+
+    .form-field textarea { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      background: var(--black);
+      color: var(--parch);
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 0.85rem;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    .form-submit:hover { background: var(--mid); }
+
+    .form-note {
+      font-family: Arial, sans-serif;
+      font-size: 0.76rem;
+      color: #888;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      padding: 2.5rem;
+      text-align: center;
+      border-top: 1px solid rgba(240,235,225,0.06);
+    }
+
+    footer p {
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    footer .footer-logo {
+      color: var(--amber);
+      font-style: italic;
+      font-family: 'Georgia', serif;
+      font-size: 1rem;
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow  { animation: fadeUp 0.6s ease 0.2s both; }
+    .hero-headline { animation: fadeUp 0.7s ease 0.4s both; }
+    .hero-sub      { animation: fadeUp 0.7s ease 0.6s both; }
+    .hero-actions  { animation: fadeUp 0.7s ease 0.8s both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      nav { padding: 1rem 1.4rem; }
+      .hero { padding: 5rem 1.4rem 4rem; }
+      .section { padding: 4rem 1.4rem; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .who-section {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .who-right { border-left: none; padding-left: 0; border-top: 1px solid rgba(193,125,46,0.2); padding-top: 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .pullquote-section { padding: 3.5rem 1.4rem; }
+      .perks-section { padding: 4rem 1.4rem; }
+      .form-section { padding: 4rem 1.4rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">WildLens Africa</span>
+  <a href="#join" class="nav-cta">Express Interest</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Built for Africa's Wildlife Photographers</p>
+  <h1 class="hero-headline">
+    Your best work deserves more than<br>
+    <em>an algorithm's good mood.</em>
+  </h1>
+  <p class="hero-sub">
+    WildLens Africa is a platform where tourists and documentary crews search for and contact professional wildlife photographers by country, specialty and national park. Not through Instagram. Not through word of mouth. Through a platform built to put your work in front of the people who actually want to hire you.
+  </p>
+  <div class="hero-actions">
+    <a href="#join" class="btn-primary">Register Your Interest</a>
+    <a href="#how" class="btn-ghost">See How It Works</a>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section style="padding: 6rem 2.5rem; max-width: 1100px; margin: 0 auto;">
+  <p class="section-label">The Problem</p>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-num">01</div>
+      <p class="problem-text">
+        Tourists who search "gorilla photographer Uganda" on Google find <strong>travel blogs and stock photo sites</strong> — not the actual photographers working in Bwindi every week.
+      </p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">02</div>
+      <p class="problem-text">
+        Your Instagram portfolio gets seen by other photographers. The person booking a two-week Kenya safari has <strong>no idea where to find you</strong> or how to verify you are worth hiring.
+      </p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">03</div>
+      <p class="problem-text">
+        Referrals from lodge managers and tour operators work — but they are <strong>slow, unpredictable and impossible to scale</strong> when you want consistent bookings across multiple parks.
+      </p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">04</div>
+      <p class="problem-text">
+        Stock platforms take your images, set the price, keep the client relationship and pay you a fraction. <strong>You never know who bought your work</strong> or why — let alone get a booking out of it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pullquote-section">
+  <p class="pullquote">
+    "The market for professional wildlife photography in Africa is real.
+    The infrastructure to connect photographers with clients
+    <span>is not."</span>
+  </p>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <p class="section-label">How It Works</p>
+  <div class="how-grid">
+    <div class="how-step">
+      <p class="how-step-num">Step 01</p>
+      <h3>Build your profile</h3>
+      <p>Upload your portfolio, list the parks and countries you work in and set your specialties. Your profile is your pitch to every tourist who finds the platform.</p>
+    </div>
+    <div class="how-step">
+      <p class="how-step-num">Step 02</p>
+      <h3>Get found by the right people</h3>
+      <p>Tourists search by location, wildlife type and language. If someone wants a Maasai Mara leopard specialist, your name comes up — not a stock agency.</p>
+    </div>
+    <div class="how-step">
+      <p class="how-step-num">Step 03</p>
+      <h3>Receive direct inquiries</h3>
+      <p>Tourists contact you directly through the platform. You handle the negotiation. No middlemen taking a cut of a deal they had nothing to do with.</p>
+    </div>
+    <div class="how-step">
+      <p class="how-step-num">Step 04</p>
+      <h3>Build a verified track record</h3>
+      <p>Reviews from past clients sit on your public profile. A tourist from Germany deciding between two photographers sees your history, not just your photos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="perks-section">
+  <div class="perks-inner">
+    <p class="section-label" style="color: var(--sage);">What You Get</p>
+    <h2 class="perks-headline">A permanent, searchable home for your work and your reputation.</h2>
+    <div class="perks-list">
+      <div class="perk">
+        <div class="perk-dot"></div>
+        <div class="perk-body">
+          <h4>Public portfolio with full attribution</h4>
+          <p>Every image links back to you. No watermark-stripping, no anonymous uploads.</p>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-dot"></div>
+        <div class="perk-body">
+          <h4>Discovery by park and species</h4>
+          <p>Tourists can filter by national park, wildlife type and country so your work reaches the people planning that specific trip.</p>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-body">
+          <div class="perk-dot" style="margin-top:0.35rem;"></div>
+        </div>
+        <div class="perk-body">
+          <h4>Inquiry system built for bookings</h4>
+          <p>Structured contact forms that ask tourists the right questions before they reach you — dates, group size, what they want to photograph.</p>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-dot"></div>
+        <div class="perk-body">
+          <h4>Verified photographer badge</h4>
+          <p>Credibility signal for tourists who have never worked with a wildlife photographer before and need a reason to trust you.</p>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-dot"></div>
+        <div class="perk-body">
+          <h4>Social media links that actually display</h4>
+          <p>Your Instagram, YouTube and website sit prominently on your profile — not buried in a footer.</p>
+        </div>
+      </div>
+      <div class="perk">
+        <div class="perk-dot"></div>
+        <div class="perk-body">
+          <h4>Google-indexed profile page</h4>
+          <p>Your name and specialties are indexed so searches like "gorilla photographer Uganda" can return your actual profile, not a travel blog.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE WANT -->
+<section class="who-section">
+  <div class="who-left">
+    <h2>Who this is built for</h2>
+    <p>
+      WildLens Africa is not a stock platform. It is not for casual travel photographers who shoot on weekends. It is for working professionals who operate in the field, know their parks and are ready to receive paying clients.
+    </p>
+    <br>
+    <p style="color: rgba(240,235,225,0.5);">
+      We are recruiting founding photographers across Uganda, Kenya, Tanzania, Rwanda, Botswana, South Africa and Namibia. Founding profiles receive priority ranking when the platform launches.
+    </p>
+  </div>
+  <div class="who-right">
+    <div class="fit-item"><span class="fit-mark">✓</span> Professional wildlife or safari photographers</div>
+    <div class="fit-item"><span class="fit-mark">✓</span> Nature and conservation photographers</div>
+    <div class="fit-item"><span class="fit-mark">✓</span> Documentary and photojournalism specialists</div>
+    <div class="fit-item"><span class="fit-mark">✓</span> Bird and primate photography specialists</div>
+    <div class="fit-item"><span class="fit-mark">✓</span> Photographers operating in African national parks</div>
+    <div class="fit-item"><span class="fit-mark">✓</span> Freelancers open to tourist bookings</div>
+    <div class="fit-item" style="color: rgba(240,235,225,0.3); border-bottom: none;">
+      <span style="color: #444; font-weight: 700; font-size: 1.1rem;">✕</span>
+      Stock contributors with no interest in direct client work
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section" id="join">
+  <div class="form-inner">
+
+    <!-- DEFAULT STATE -->
+    <div id="form-default">
+      <p class="form-eyebrow">Early Access</p>
+      <h2 class="form-headline">Register as a Founding Photographer</h2>
+      <p class="form-sub">
+        We are building the photographer directory first. Founding photographers get priority placement, a verified badge at no cost and input on features before we open to the public. Takes two minutes.
+      </p>
+
+      <div id="form-error" style="display:none; background:#fde8e8; border-left:3px solid #c0392b; padding:0.75rem 1rem; margin-bottom:1.2rem; font-family:Arial,sans-serif; font-size:0.84rem; color:#7b1414;"></div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="f-first">First Name <span style="color:#c0392b;">*</span></label>
+          <input id="f-first" type="text" placeholder="John" autocomplete="given-name" />
+        </div>
+        <div class="form-field">
+          <label for="f-last">Last Name <span style="color:#c0392b;">*</span></label>
+          <input id="f-last" type="text" placeholder="Kato" autocomplete="family-name" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="f-email">Email Address <span style="color:#c0392b;">*</span></label>
+        <input id="f-email" type="email" placeholder="john@example.com" autocomplete="email" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="f-country">Country You Work In <span style="color:#c0392b;">*</span></label>
+          <select id="f-country">
+            <option value="">Select country</option>
+            <option>Uganda</option>
+            <option>Kenya</option>
+            <option>Tanzania</option>
+            <option>Rwanda</option>
+            <option>Botswana</option>
+            <option>South Africa</option>
+            <option>Namibia</option>
+            <option>Zimbabwe</option>
+            <option>Ethiopia</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="f-specialty">Primary Specialty <span style="color:#c0392b;">*</span></label>
+          <select id="f-specialty">
+            <option value="">Select specialty</option>
+            <option>Wildlife — Big Cats</option>
+            <option>Wildlife — Primates</option>
+            <option>Wildlife — Birds</option>
+            <option>Wildlife — General</option>
+            <option>Safari Photography</option>
+            <option>Conservation Documentary</option>
+            <option>Landscape</option>
+            <option>Cultural / Travel</option>
+            <option>Underwater</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="f-portfolio">Instagram or Portfolio Link <span style="color:#aaa; font-weight:400;">(optional)</span></label>
+        <input id="f-portfolio" type="url" placeholder="https://instagram.com/yourhandle" autocomplete="url" />
+      </div>
+
+      <div class="form-field">
+        <label for="f-notes">Anything you want us to know? <span style="color:#aaa; font-weight:400;">(optional)</span></label>
+        <textarea id="f-notes" placeholder="Parks you work in, years of experience, what you're hoping the platform solves for you..."></textarea>
+      </div>
+
+      <button class="form-submit" id="form-btn" onclick="submitForm()">Register My Interest</button>
+      <p class="form-note">No payment required. No commitment. We will contact you before launch.</p>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div id="form-success" style="display:none; text-align:center; padding:3rem 1rem;">
+      <div style="font-size:2.5rem; margin-bottom:1.2rem;">✓</div>
+      <h2 class="form-headline" style="margin-bottom:0.8rem;">You're on the list.</h2>
+      <p style="font-family:Arial,sans-serif; font-size:0.95rem; color:#555; max-width:420px; margin:0 auto; line-height:1.7;">
+        We have your details. You will hear from us before WildLens Africa opens to the public —
+        with your founding photographer profile ready to activate.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+/*
+ * ─────────────────────────────────────────────────────────────
+ *  GOOGLE FORMS SETUP — YOU MUST COMPLETE THIS STEP
+ * ─────────────────────────────────────────────────────────────
+ *
+ *  1. Go to forms.google.com and create a new form.
+ *
+ *  2. Add these 6 questions IN THIS EXACT ORDER:
+ *       Q1 — Short answer — "First Name"
+ *       Q2 — Short answer — "Last Name"
+ *       Q3 — Short answer — "Email Address"
+ *       Q4 — Short answer — "Country You Work In"
+ *       Q5 — Short answer — "Primary Specialty"
+ *       Q6 — Short answer — "Instagram or Portfolio Link"
+ *       Q7 — Paragraph   — "Anything you want us to know?"
+ *
+ *  3. Click the three-dot menu (top right) → "Get pre-filled link"
+ *     Fill in dummy text in every field → click "Get link" → copy it.
+ *
+ *  4. From that pre-filled URL extract the entry IDs.
+ *     They look like: entry.123456789
+ *     Paste each one into the ENTRY_IDS object below.
+ *
+ *  5. From your form URL extract the form ID (the long string between /d/ and /viewform)
+ *     Paste it into FORM_ID below.
+ *
+ *  6. In your Google Form settings → Responses → turn ON
+ *     "Get email notifications for new responses."
+ *
+ *  That is all. The form below will submit silently in the background.
+ * ─────────────────────────────────────────────────────────────
+ */
+
+var FORM_ID   = "1FAIpQLSe2DwhGtrqY2981_Mfo5T5T_U9tl94qOJ4erhfRWLuQBiEP1g";
+
+var ENTRY_IDS = {
+  firstName : "entry.202271872",
+  lastName  : "entry.1350565466",
+  email     : "entry.1040499095",
+  country   : "entry.1599698465",
+  specialty : "entry.727230994",
+  portfolio : "entry.303407452",
+  notes     : "entry.73175280"
+};
+
+function showError(msg) {
+  var el = document.getElementById("form-error");
+  el.textContent = msg;
+  el.style.display = "block";
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function clearError() {
+  var el = document.getElementById("form-error");
+  el.style.display = "none";
+  el.textContent = "";
+}
+
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+function submitForm() {
+  clearError();
+
+  var firstName = document.getElementById("f-first").value.trim();
+  var lastName  = document.getElementById("f-last").value.trim();
+  var email     = document.getElementById("f-email").value.trim();
+  var country   = document.getElementById("f-country").value;
+  var specialty = document.getElementById("f-specialty").value;
+  var portfolio = document.getElementById("f-portfolio").value.trim();
+  var notes     = document.getElementById("f-notes").value.trim();
+
+  if (!firstName)              { showError("First name is required.");               return; }
+  if (!lastName)               { showError("Last name is required.");                return; }
+  if (!email)                  { showError("Email address is required.");            return; }
+  if (!isValidEmail(email))    { showError("Please enter a valid email address.");   return; }
+  if (!country)                { showError("Please select the country you work in."); return; }
+  if (!specialty)              { showError("Please select your primary specialty.");  return; }
+
+  var btn = document.getElementById("form-btn");
+  btn.textContent = "Submitting...";
+  btn.disabled = true;
+  btn.style.opacity = "0.6";
+
+  var formUrl = "https://docs.google.com/forms/d/e/" + FORM_ID + "/formResponse";
+
+  var params = new URLSearchParams();
+  params.append(ENTRY_IDS.firstName, firstName);
+  params.append(ENTRY_IDS.lastName,  lastName);
+  params.append(ENTRY_IDS.email,     email);
+  params.append(ENTRY_IDS.country,   country);
+  params.append(ENTRY_IDS.specialty, specialty);
+  params.append(ENTRY_IDS.portfolio, portfolio);
+  params.append(ENTRY_IDS.notes,     notes);
+
+  /*
+   * Google Forms does not support CORS so a direct fetch will always
+   * return a network error even on success. We use a hidden iframe trick:
+   * submit to the iframe, wait 2.5 seconds then show the success screen.
+   * The response always lands in the iframe (which we ignore) but the
+   * data is recorded in your Google Sheet.
+   */
+  var iframe = document.createElement("iframe");
+  iframe.name    = "wl-submit-frame";
+  iframe.style.cssText = "display:none;width:0;height:0;border:none;";
+  document.body.appendChild(iframe);
+
+  var hiddenForm = document.createElement("form");
+  hiddenForm.method  = "POST";
+  hiddenForm.action  = formUrl;
+  hiddenForm.target  = "wl-submit-frame";
+
+  params.forEach(function(value, key) {
+    var input    = document.createElement("input");
+    input.type   = "hidden";
+    input.name   = key;
+    input.value  = value;
+    hiddenForm.appendChild(input);
+  });
+
+  document.body.appendChild(hiddenForm);
+  hiddenForm.submit();
+
+  setTimeout(function() {
+    document.getElementById("form-default").style.display = "none";
+    document.getElementById("form-success").style.display = "block";
+    document.getElementById("join").scrollIntoView({ behavior: "smooth" });
+  }, 2500);
+}
+</script>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">WildLens Africa</span>
+  <p>Built to connect Africa's wildlife photographers with the world. &nbsp;·&nbsp; Launching 2025.</p>
+</footer>
+
+</body>
+</html>
